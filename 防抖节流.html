@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>节流防抖</title>
+  </head>
+  <body>
+    <button onclick="bounce()">防抖</button>
+    <button onclick="deThrottle()">节流</button>
+  </body>
+  <script>
+    // 封装防抖函数
+    const debounce = (fn, wait) => {
+      let timer;
+      return function () {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          fn();
+        }, wait);
+      };
+    };
+    const fn1 = () => {
+      console.log(1);
+    };
+    const bounce = debounce(fn1, 1000);
+
+    // 封装节流函数 根据本地时间来判断
+    // const throttle = (fn, wait) => {
+    //   let data = 0;
+    //   return function(){
+    //     let now = +new Date()
+    //     if(now - data > wait){
+    //         fn()
+    //         data = now
+    //     }
+    //   }
+    // };
+    // 根据定时器来判断
+    const throttle = (fn, wait) => {
+      let timer;
+      return function () {
+        if (!timer) {
+          fn();
+          timer = setTimeout(() => {
+            timer = null;
+          }, wait);
+        }
+      };
+    };
+    const fn2 = () => {
+      console.log(2);
+    };
+    const deThrottle = throttle(fn2, 1000);
+  </script>
+</html>
