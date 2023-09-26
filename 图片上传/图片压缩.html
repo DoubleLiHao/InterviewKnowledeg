@@ -1,0 +1,62 @@
+<!--
+ * @Author: DoubleLiHao =2998000782@qq.com
+ * @Date: 2023-09-26 12:36:53
+ * @LastEditors: DoubleLiHao =2998000782@qq.com
+ * @LastEditTime: 2023-09-26 19:58:37
+ * @FilePath: \InterviewKnowledeg\图片上传\图片压缩.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <img src="" alt="" />
+    <title>图片压缩</title>
+  </head>
+  <body>
+    <input type="file" id="file" />
+    <div>
+      <canvas id="canvas" width="800" height="800"></canvas>
+    </div>
+  </body>
+  <script>
+    const input = document.getElementById("file");
+    const img = document.createElement("img");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    let imgURL = "";
+    input.onchange = (e) => {
+      const blob = e.target.files[0];
+      console.log(blob.size, "压缩前大小");
+      imgURL = window.URL.createObjectURL(blob);
+      img.src = imgURL;
+    };
+    img.onload = () => {
+      window.URL.revokeObjectURL(imgURL);
+      const naturalImgSize = [img.naturalWidth, img.naturalHeight];
+      //   长宽比值
+      const ratio = naturalImgSize[0] / naturalImgSize[1];
+      const finalImgSize = [800 * ratio, 800];
+      const dx = (800 - finalImgSize[0]) / 2;
+      ctx.drawImage(
+        img,
+        0,
+        0,
+        naturalImgSize[0],
+        naturalImgSize[1],
+        dx,
+        0,
+        finalImgSize[0],
+        finalImgSize[1]
+      );
+      canvas.toBlob(
+        (blob) => {
+          console.log(blob.size, "压缩后大小");
+        },
+        "image/jpeg",
+        0.2
+      );
+    };
+  </script>
+</html>

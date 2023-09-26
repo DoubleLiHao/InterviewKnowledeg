@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片上传预览</title>
+  </head>
+  <body>
+    <input type="file" id="file" />
+    <img src="" id="img" />
+  </body>
+  <script>
+    const input = document.getElementById("file");
+    const img = document.getElementById("img");
+    input.onchange = (e) => {
+      const blob = e.target.files[0];
+    //   previewImgbyBlob(blob, img);
+      previewImgbyBase64(blob, img);
+    };
+    // blob方式
+    function previewImgbyBlob(blob, imgSelector) {
+      const imgUrl = window.URL.createObjectURL(blob);
+      imgSelector.src = imgUrl;
+      imgSelector.onload = () => {
+        window.URL.revokeObjectURL(imgUrl);
+      };
+    }
+
+    // data方式
+    function previewImgbyBase64(blob, imgSelector) {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onload = () => {
+        imgSelector.src = reader.result;    
+      };
+    }
+    /*blobUrl和 dataUrl区别：
+        1. blob:...  data:...
+        2. blob简洁
+        3. blobUrl不能直接在浏览器地址栏中打开 dataUrl可以
+        4. blobUrl可以用于多种形式的网络地址，如html，json等不局限于图片
+    */
+  </script>
+</html>

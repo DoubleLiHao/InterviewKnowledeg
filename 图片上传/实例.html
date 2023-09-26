@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片的上传预览和压缩</title>
+  </head>
+  <body>
+    <input type="file" id="file" />
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </body>
+  <script>
+    /*
+        图片压缩流程：
+            1、获取img 调整裁剪高度和宽度以及canvas的绘画位置和大小
+            2、通过ctx.drawImage将图片绘制到canvas中
+            3、使用canvas.toBlob(fn,type,quality)进行压缩
+                fn参数 blob 压缩后的blob
+    */
+    const input = document.getElementById("file");
+    const canvas = document.getElementById("canvas");
+    const img = document.createElement("img");
+    const ctx = canvas.getContext("2d");
+    let imgURL = "";
+
+    input.onchange = (e) => {
+      const blob = e.target.files[0];
+      console.log(blob.size, "原始图片大小");
+      // 生成blob URL
+      imgURL = window.URL.createObjectURL(blob);
+      img.src = imgURL;
+    };
+    img.onload = () => {
+      window.URL.revokeObjectURL(imgURL);
+      setCanvas(ctx, img);
+      compress();
+    };
+    function setCanvas(ctx, img) {
+      const naturalImgSize = [img.naturalWidth, img.naturalHeight];
+      const ratio = naturalImgSize[0] / naturalImgSize[1];
+      const finalImgSize = [600 * ratio, 600];
+      const dx = (800 - finalImgSize[0]) / 2;
+      ctx.drawImage(
+        img,
+        0,
+        0,
+        naturalImgSize[0],
+        naturalImgSize[1],
+        dx,
+        0,
+        finalImgSize[0],
+        finalImgSize[1]
+      );
+    }
+    function compress() {
+      canvas.toBlob(
+        (blob) => {
+          console.log(blob.size, "压缩后的大小");
+        },
+        "image/jpeg",
+        0.2
+      );
+    }
+  </script>
+</html>
