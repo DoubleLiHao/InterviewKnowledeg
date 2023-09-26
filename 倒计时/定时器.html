@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>定时器</title>
+  </head>
+  <body>
+    <button id="button1">循环按钮1</button>
+    <button id="button2">循环按钮2</button>
+    <button id="button3">循环按钮3</button>
+  </body>
+  <script>
+    /*
+        影响定时器的因素:
+            1. 多个宏任务队列排队
+            2. 浏览器的放缓机制,当所处标签页被隐藏时会延迟定时的时间
+            微软:
+                - setInterval: 隐藏页面的最小时间间隔是1s
+                -setTimeout: 小于1s会按1s执行 大于1s会按 (n+1)s执行
+    */
+    const transformDate = (date) => {
+      const currentDate =
+        date.getMinutes() +
+        "分" +
+        date.getSeconds() +
+        "秒" +
+        date.getMilliseconds() +
+        "毫秒";
+      return currentDate;
+    };
+    // setInterval 在微软中页面隐藏时最小的时间间隔是1s
+    document.getElementById("button1").addEventListener("click", () => {
+      setInterval(() => {
+        const mydate = new Date();
+        console.log("第一个循环", transformDate(mydate));
+      }, 1000);
+    });
+    // document.addEventListener("visibilitychange", () => {
+    //   // if(document.hidden){
+    //   //     console.log('页面不可见');
+    //   // }
+    // //   if (document.hidden) {
+    // //     console.log("页面不可见");
+    // //     timer();
+    // //   } else {
+    // //     console.log("页面可见");
+    // //     timer();
+    // //   }
+    // });
+    // setTimeout 小于1s的延迟会被转化成1s Ns（N>1）的延迟会转化成N+1s
+    // const timer = () => {
+    //   const mydate = new Date();
+    //   console.log(transformDate(mydate));
+    //   setTimeout(() => {
+    //     const delayDate = new Date()
+    //     console.log("延迟时间", transformDate(delayDate));
+    //   }, 2000);
+    // };
+  </script>
+</html>

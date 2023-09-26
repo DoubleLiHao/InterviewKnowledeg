@@ -1,0 +1,81 @@
+<!--
+ * @Author: DoubleLiHao =2998000782@qq.com
+ * @Date: 2023-09-23 12:32:08
+ * @LastEditors: DoubleLiHao =2998000782@qq.com
+ * @LastEditTime: 2023-09-23 15:34:12
+ * @FilePath: \InterviewKnowledeg\倒计时\requestAnimiationFrame.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="content"></div>
+  </body>
+  <script>
+    const content = document.getElementById("content");
+    // 获取服务端的时间
+    const initialTime = new Date();
+    const targetTime = new Date("2023-09-23 19:00:00");
+
+    class CountDown {
+      constructor(targetTime, initialTime) {
+        this.serviceTime = this.reduceError(initialTime);
+        this.milliseconds = +targetTime - this.serviceTime;
+        this.myInterval(1000);
+      }
+
+      // 封装setInterval
+      myInterval(wait) {
+        let startTime = new Date();
+        let timer = 0;
+        const setInterval = () => {
+          const now = new Date();
+          timer += now - startTime;
+          startTime = now;
+          if (timer > wait) {
+            this.countDown();
+            this.result = this.transformTime(this.milliseconds);
+            console.log(this.result);
+            timer = 0;
+          }
+          requestAnimationFrame(setInterval);
+        };
+        setInterval();
+      }
+
+      // 减小网络延迟导致的误差
+      reduceError(initialTime) {
+        const now = new Date();
+        let gap = now - initialTime;
+        const serviceTime = +initialTime + gap;
+        return serviceTime;
+      }
+
+      // 转换时间格式
+      transformTime(milliseconds) {
+        let seconds = 1000,
+          minutes = seconds * 60,
+          hour = minutes * 60;
+        return {
+          hour: ("0" + parseInt(milliseconds / hour)).slice(-2),
+          minutes: parseInt((milliseconds % hour) / minutes),
+          seconds: parseInt((milliseconds % minutes) / seconds),
+        };
+      }
+
+      countDown() {
+        this.milliseconds -= 1000;
+        this.result = this.transformTime(this.milliseconds);
+      }
+    }
+    const test = new CountDown(targetTime, initialTime);
+    content.innerText = `${test.hour || "00"}-${test.minutes || "00"}-${
+      test.seconds || "00"
+    }`;
+  </script>
+</html>
