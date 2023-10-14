@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拖拽上传</title>
+  </head>
+  <body>
+    <div style="border: 1px solid black; height: 100px" id="div"></div>
+  </body>
+  <script>
+    const Div = document.getElementById("div");
+    Div.ondrop = (e) => {
+      e.preventDefault();
+      let fileList = [];
+      for (const item of e.dataTransfer.items) {
+        const entry = item.webkitGetAsEntry();
+        getFiles(entry, (e) => {
+          fileList.push(e);
+        });
+      }
+    };
+    Div.ondragenter = (e) => {
+      e.preventDefault();
+    };
+    Div.ondragover = (e) => {
+      e.preventDefault();
+    };
+    const getFiles = (entry, fn) => {
+      if (entry.isDirectory) {
+        const reader = entry.createReader();
+        reader.readEntries((files) => {
+          files.forEach((item) => {
+            getFiles(item, fn);
+          });
+        });
+      } else {
+        entry.file((f) => {
+          fn(f);
+        });
+      }
+    };
+  </script>
+</html>

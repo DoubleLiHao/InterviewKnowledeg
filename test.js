@@ -1,7 +1,8 @@
-const test = () => {
-  setTimeout(() => {
-    console.log(1);
-  }, 1000);
-};
-test();
-console.log(2);
+function test(fn) {
+  fn(1);
+}
+let res = 0;
+const result = test((e) => {
+  res = e;
+});
+console.log(res);

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>单/多文件上传</title>
+  </head>
+  <body>
+    <input type="file" id="single" />
+    <input type="file" multiple id="multiple" />
+    <input type="file" webkitdirectory id="file" />
+  </body>
+  <script>
+    const Single = document.getElementById("single");
+    const Multiple = document.getElementById("multiple");
+    const File = document.getElementById("file");
+    Single.onchange = (e) => {
+      const file = e.target.files[0];
+      upload(file.name, file);
+    };
+    const upload = (fileName, file) => {
+      const formData = new FormData();
+      formData.set(fileName, file);
+      console.log(formData.get(fileName));
+    };
+    Multiple.onchange = (e) => {
+      console.log(e.target.files);
+    };
+    File.onchange = (e) => {
+      console.log(e.target.files);
+    };
+  </script>
+</html>
