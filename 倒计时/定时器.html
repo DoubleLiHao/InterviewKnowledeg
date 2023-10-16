@@ -36,6 +36,17 @@
         console.log("第一个循环", transformDate(mydate));
       }, 1000);
     });
+    document.getElementById("button2").addEventListener("click", () => {
+      setInterval(() => {
+        const mydate = new Date();
+        // console.log("第二个循环", transformDate(mydate));
+        setInterval(() => {
+          setInterval(() => {
+            setInterval(() => {}, 100);
+          }, 100);
+        }, 100);
+      }, 100);
+    });
     // document.addEventListener("visibilitychange", () => {
     //   // if(document.hidden){
     //   //     console.log('页面不可见');

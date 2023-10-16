@@ -30,12 +30,14 @@
 //   a = 1;
 //   console.log(a);
 // }
-// fn();
+// fn(); 
+
 // function fn() {
 //   a = 2;
 //   console.log(a);
 // }
-// fn();
+// fn(); 
+
 // function fn() {
 //   a = 3;
 //   console.log(a);
@@ -56,16 +58,16 @@
 // fn(2);
 
 // 6、字节
-// var a = 5;
-// (function () {
-//   console.log(a);
-//   a = 10;
-//   console.log(a);
-//   var a = 20;
-//   console.log(a);
-// })();
-// var b = {
-//   a,
-//   c: b,
-// };
-// console.log(b);
+var a = 5;
+(function () {
+  console.log(a);
+  a = 10;
+  console.log(a);
+  var a = 20;
+  console.log(a);
+})();
+var b = {
+  a:a,
+  c: b,
+};
+console.log(b);

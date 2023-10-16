@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="file" id="file" />
+  </body>
+  <script>
+    const File = document.getElementById("file");
+    File.onchange = (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (res) => {
+        let result = [];
+        const arrs = res.currentTarget.result.split("\r\n\r\n");
+        arrs.forEach((item) => {
+          let subResult = 0;
+          const subArrs = item.split("\r\n");
+          subArrs.map((item) => {
+            subResult += +item;
+          });
+          result.push(subResult);
+        });
+        console.log(result);
+      };
+    };
+  </script>
+</html>

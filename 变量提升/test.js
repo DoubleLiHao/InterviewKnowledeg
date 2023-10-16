@@ -1,2 +1,6 @@
-a = 1;
-console.log(this.a);
+function a(a) {
+  console.log(a);
+  a = 1;
+  console.log(a);
+}
+a();
